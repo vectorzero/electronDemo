@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>小工具</title>
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <style type="text/css">
+      .wrapper {
+        margin: 20px;
+      }
+      .wrapper span {
+        font-size: 16px;
+        color: #666;
+      }
+      p {
+        font-size: 16px;
+        color: #666;
+      }
+      .num {
+        margin-left: 20px;
+      }
+      .rect {
+        display: inline-block;
+        width: 23px;
+        height: 23px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="form-inline wrapper">
+      <p>
+        <input class="form-control" id="rgb" type="text" placeholder="请输入16进制">
+        <button id="toRGB" class="btn btn-default">转为RGB格式</button>
+        <span id="rgbRect" class="rect"></span>
+        <span id="showRGB"></span>
+      </p>
+      <p>
+        <input class="form-control" id="hex" type="text" placeholder="请输入rgb">
+        <button id="toHEX" class="btn btn-default">转为16进制</button>
+        <span id="hexRect" class="rect"></span>
+        <span id="showHEX"></span>
+      </p>
+    </div>
+    <div class="form-inline wrapper">
+      <input class="form-control" id="num" type="text" placeholder="请输入数字">
+      <button id="gold" class="btn btn-warning">黄金比例</button>
+    </div>
+    <p class="num" id="showI"></p>
+    <p class="num" id="showII"></p>
+  </body>
+  <script>
+    require('./renderer.js')
+    var num = document.getElementById("num"),
+        gold = document.getElementById("gold"),
+        showI = document.getElementById("showI"),
+        showII = document.getElementById("showII"),
+        rgb = document.getElementById("rgb"),
+        hex = document.getElementById("hex"),
+        toHEX = document.getElementById("toHEX"),
+        toRGB = document.getElementById("toRGB"),
+        showHEX = document.getElementById("showHEX"),
+        showRGB = document.getElementById("showRGB"),
+        rgbRect = document.getElementById("rgbRect"),
+        hexRect = document.getElementById("hexRect");
+    gold.onclick = function(){
+      showI.innerHTML = num.value/0.618;
+      showII.innerHTML = num.value*0.618;
+    }
+    //十六进制颜色值域RGB格式颜色值之间的相互转换  
+      
+    //-------------------------------------  
+    //十六进制颜色值的正则表达式  
+    var reg = /^#([0-9a-fA-f]{3}|[0-9a-fA-f]{6})$/;  
+    /*RGB颜色转换为16进制*/  
+    function colorHex(color) {
+      var rgb = color.split(',');
+      var r = parseInt(rgb[0].split('(')[1]);
+      var g = parseInt(rgb[1]);
+      var b = parseInt(rgb[2].split(')')[0]);
+   
+      var hex = "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
+      return hex;
+   }
+
+    //-------------------------------------------------  
+      
+    /*16进制颜色转为RGB格式*/  
+    String.prototype.colorRgb = function(){  
+        var sColor = this.toLowerCase();  
+        if(sColor && reg.test(sColor)){  
+            if(sColor.length === 4){  
+                var sColorNew = "#";  
+                for(var i=1; i<4; i+=1){  
+                    sColorNew += sColor.slice(i,i+1).concat(sColor.slice(i,i+1));     
+                }  
+                sColor = sColorNew;  
+            }  
+            //处理六位的颜色值  
+            var sColorChange = [];  
+            for(var i=1; i<7; i+=2){  
+                sColorChange.push(parseInt("0x"+sColor.slice(i,i+2)));    
+            }  
+            return "rgb(" + sColorChange.join(",") + ")";  
+        }else{  
+            return sColor;    
+        }  
+    };
+
+    toRGB.onclick = function(){
+      showRGB.innerHTML = rgb.value.colorRgb();
+      rgbRect.style.background = rgb.value.colorRgb();
+    }
+    toHEX.onclick = function(){
+      showHEX.innerHTML = colorHex(hex.value);
+      hexRect.style.background = colorHex(hex.value);
+    }
+  </script>
+</html>
