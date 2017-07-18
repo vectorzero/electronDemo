@@ -1,12 +1,12 @@
 # electronDemo
 
-A basic Electron application needs just these files:
+一个基本的**Electron**应用只需要这些文件：
 
-- `package.json` - Points to the app's main file and lists its details and dependencies.
-- `main.js` - Starts the app and creates a browser window to render HTML. This is the app's **main process**.
-- `index.html` - A web page to render. This is the app's **renderer process**.
+- `package.json` - 指向应用程序的主文件，并列出其详细信息和依赖关系。
+- `main.js` - 启动应用程序并创建一个浏览器窗口来呈现HTML，这是应用程序的**主要进程**。
+- `index.html` - 要渲染的网页，这是应用程序的**渲染进程**。
 
-You can learn more about each of these components within the [Quick Start Guide](http://electron.atom.io/docs/tutorial/quick-start).
+你可以在 [Quick Start Guide](http://electron.atom.io/docs/tutorial/quick-start) 中了解有关这些组件的更多信息。
 
 ## 使用
 
